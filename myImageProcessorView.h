@@ -32,6 +32,7 @@ public:
 public:
 	virtual void OnDraw(CDC* pDC);  // 重写以绘制该视图
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	void WriteBufferToBMP(BYTE *im_buffer, WORD X_bitmap, WORD Y_bitmap, const char* BMPname);// 将图像信息写入bmp文件中
 protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
@@ -56,11 +57,13 @@ private:
 	bool GetImageBuffer(CString& strPath);// 将指定路径的图像信息提取到数组中
 	void FreeImageBuffer(void);			// 释放图像信息占用的内存
 	void PreDrawImage(void);			// 在内存中预先绘制图像
-	void WriteBufferToBMP(BYTE *im_buffer, WORD X_bitmap, WORD Y_bitmap, const char* BMPname);// 将图像信息写入bmp文件中
+	
 public:
 	afx_msg void OnFileOpen();
 	afx_msg void OnFileSave();
 	afx_msg void OnGray();
+	afx_msg void OnBlur();
+//	afx_msg void OnBnClickedGaussApply2();
 };
 
 #ifndef _DEBUG  // myImageProcessorView.cpp 中的调试版本

@@ -12,6 +12,7 @@
 #include "myImageProcessorDoc.h"
 #include "myImageProcessorView.h"
 #include "GrayLineDlg.h"
+#include "SimpleFunDlg.h"
 
 #include "JpegDecoder.h"
 #include <iostream>
@@ -58,6 +59,7 @@ BEGIN_MESSAGE_MAP(CmyImageProcessorView, CView)
 	ON_COMMAND(ID_FILE_OPEN, &CmyImageProcessorView::OnFileOpen)
 	ON_COMMAND(ID_FILE_SAVE, &CmyImageProcessorView::OnFileSave)
 	ON_COMMAND(ID_GRAY, &CmyImageProcessorView::OnGray)
+	ON_COMMAND(ID_BLUR, &CmyImageProcessorView::OnBlur)
 END_MESSAGE_MAP()
 
 // CmyImageProcessorView 构造/析构
@@ -92,14 +94,17 @@ void CmyImageProcessorView::OnDraw(CDC* /*pDC*/)
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
+	CRect rectDlg;
+	GetClientRect(rectDlg);
 
 	if (m_bOpenimage == 1) {
 		CDC* pDC = GetDC();
 		Graphics graph(pDC->GetSafeHdc());
 		Image image(m_strPath);
 		//MessageBox(m_strPath);
-
-		graph.DrawImage(&image, 0, 0);
+		
+		graph.DrawImage(&image, (rectDlg.Width() - m_nPicWidth)/2 , (rectDlg.Height() - m_nPicHeight)/2,
+			(int)m_nPicWidth, (int)m_nPicHeight);
 	}
 
 	// TODO: 在此处为本机数据添加绘制代码
@@ -252,7 +257,6 @@ void CmyImageProcessorView::OnFileOpen()
 	}
 	//m_strPath.Format() = filePath.GetString();
 	m_bOpenimage = 1;
-	MessageBox(m_strPath);
 	OpenFile(m_strPath);
 }
 
@@ -345,6 +349,21 @@ void CmyImageProcessorView::OnFileSave()
 void CmyImageProcessorView::OnGray()
 {
 	// TODO: 在此添加命令处理程序代码
-	CGrayLineDlg dlg;
-	dlg.DoModal();
+	if (m_bOpenimage) {
+		CGrayLineDlg dlg;
+		dlg.m_type = 1;
+		dlg.DoModal();
+	}
 }
+
+
+void CmyImageProcessorView::OnBlur()
+{
+	// TODO: 在此添加命令处理程序代码
+	if (m_bOpenimage) {
+		CGrayLineDlg dlg;
+		dlg.m_type = 2;
+		dlg.DoModal();
+	}
+}
+
